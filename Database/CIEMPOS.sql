@@ -287,3 +287,18 @@ CREATE TABLE TB_BitacoraMovimiento (
 );
 GO
 
+INSERT INTO TB_Rol (Nombre, Descripcion, Estado)
+VALUES ('Administrador', 'Acceso completo al sistema.', 1);
+
+INSERT INTO TB_Rol (Nombre, Descripcion, Estado)
+VALUES ('Servicio al Cliente', 'Gestiona la atención y el registro de los clientes.', 1);
+
+INSERT INTO TB_Rol (Nombre, Descripcion, Estado)
+VALUES ('Regente', 'Asigna y aprueba las prescripciones de ejercicio de los clientes.', 1);
+
+SELECT * FROM TB_Rol;
+
+UPDATE TB_Rol
+SET Estado = 1
+WHERE IdRol = 4;
+

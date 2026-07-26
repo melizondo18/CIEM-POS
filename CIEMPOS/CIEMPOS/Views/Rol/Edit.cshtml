@@ -1,0 +1,84 @@
+﻿@* Esta vista muestra el formulario para modificar la información de un rol.
+   Permite editar los datos del rol seleccionado y enviarlos al
+   controlador para actualizar el registro en la base de datos. *@
+
+@model CIEMPOS.Models.TbRol
+
+@{
+    ViewData["Title"] = "Editar Rol";
+}
+
+<h2>Editar Rol</h2>
+
+<form asp-action="Edit" method="post" id="formEditarRol">
+
+    <!-- Mantiene el Id del rol para realizar la actualización -->
+    <input type="hidden" asp-for="IdRol" />
+
+    <div class="mb-3">
+        <label asp-for="Nombre" class="form-label"></label>
+        <input asp-for="Nombre" class="form-control" />
+        <span asp-validation-for="Nombre" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Descripcion" class="form-label"></label>
+        <textarea asp-for="Descripcion" class="form-control"></textarea>
+        <span asp-validation-for="Descripcion" class="text-danger"></span>
+    </div>
+
+    <div class="form-check mb-3">
+        <input asp-for="Estado"
+               class="form-check-input"
+               id="Estado" />
+
+        <label asp-for="Estado" class="form-check-label">
+            Rol activo
+        </label>
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Guardar Cambios
+    </button>
+
+    <a asp-action="Index" class="btn btn-secondary">
+        Cancelar
+    </a>
+
+</form>
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger mt-3">
+        @ViewBag.Error
+    </div>
+}
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        // Guarda el estado original del rol al cargar la página
+        const estadoOriginal = document.getElementById("Estado").checked;
+
+        // Intercepta el envío del formulario
+        document.getElementById("formEditarRol").addEventListener("submit", function (e) {
+
+            const estadoActual = document.getElementById("Estado").checked;
+
+            // Solo solicita confirmación si el estado cambió
+            if (estadoOriginal !== estadoActual) {
+
+                let mensaje = estadoActual
+                    ? "¿Está seguro de que desea ACTIVAR este rol?"
+                    : "¿Está seguro de que desea DESACTIVAR este rol?";
+
+                if (!confirm(mensaje)) {
+                    e.preventDefault();
+                }
+            }
+        });
+    </script>
+
+}

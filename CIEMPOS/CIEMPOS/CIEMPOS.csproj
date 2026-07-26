@@ -10,8 +10,6 @@
     <Folder Include="Common\" />
     <Folder Include="Data\" />
     <Folder Include="Helpers\" />
-    <Folder Include="Services\" />
-    <Folder Include="Repos\" />
   </ItemGroup>
 
   <ItemGroup>
