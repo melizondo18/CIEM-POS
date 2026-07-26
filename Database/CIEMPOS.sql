@@ -32,10 +32,8 @@ CREATE TABLE TB_Persona (
         PRIMARY KEY (IdPersona),
 
     CONSTRAINT UQ_TB_Persona_Identificacion
-        UNIQUE (Identificacion),
+        UNIQUE (Identificacion)
 
-    CONSTRAINT UQ_TB_Persona_Email
-        UNIQUE (Email)
 );
 GO
 

@@ -1,16 +1,36 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@* Esta vista corresponde a la página principal del sistema.
+    Proporciona acceso a los diferentes módulos administrativos
+    mediante enlaces a las funcionalidades disponibles. *@
+
+@{
+    ViewData["Title"] = "Inicio";
 }
 
-<p class="mt-4">
+<div class="text-center mb-5">
+    <h1 class="display-4">Sistema CIEMPOS</h1>
+
+    <p class="lead">
+        Centro Integral Especializado en Psicología y Salud
+    </p>
+
+    <p>
+        Bienvenido al sistema de gestión administrativa de CIEMPOS.
+        Desde esta página puede acceder a los diferentes módulos del sistema.
+    </p>
+</div>
+
+<div class="d-flex flex-wrap gap-2">
+
     <a asp-controller="Rol"
        asp-action="Index"
        class="btn btn-primary">
         Administrar Roles
     </a>
-</p>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <a asp-controller="Persona"
+       asp-action="Index"
+       class="btn btn-success">
+        Administrar Personas
+    </a>
+
 </div>

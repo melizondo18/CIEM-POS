@@ -14,6 +14,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped<IRolRepo, RolRepo>();
 builder.Services.AddScoped<RolService>();
 
+builder.Services.AddScoped<IPersonaRepo, PersonaRepo>();
+builder.Services.AddScoped<PersonaService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

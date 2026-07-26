@@ -1,0 +1,132 @@
+﻿@* Esta vista muestra el formulario para modificar la información de una persona.
+    Permite editar los datos de la persona seleccionada y enviarlos al
+    controlador para actualizar el registro en la base de datos. *@
+
+@model CIEMPOS.Models.TbPersona
+
+@{
+    ViewData["Title"] = "Editar Persona";
+}
+
+<h2>Editar Persona</h2>
+
+<form asp-action="Edit" method="post" id="formEditarPersona">
+
+    <!-- Mantiene el Id de la persona para realizar la actualización -->
+    <input type="hidden" asp-for="IdPersona" />
+
+    <div class="mb-3">
+        <label asp-for="Nombre" class="form-label"></label>
+        <input asp-for="Nombre" class="form-control" />
+        <span asp-validation-for="Nombre" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Apellido" class="form-label"></label>
+        <input asp-for="Apellido" class="form-control" />
+        <span asp-validation-for="Apellido" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Identificacion" class="form-label"></label>
+        <input asp-for="Identificacion" class="form-control" />
+        <span asp-validation-for="Identificacion" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="FechaNacimiento" class="form-label"></label>
+        <input asp-for="FechaNacimiento" class="form-control" type="date" />
+        <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Sexo" class="form-label"></label>
+        <input asp-for="Sexo" class="form-control" />
+        <span asp-validation-for="Sexo" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Telefono" class="form-label"></label>
+        <input asp-for="Telefono" class="form-control" />
+        <span asp-validation-for="Telefono" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Direccion" class="form-label"></label>
+        <textarea asp-for="Direccion" class="form-control"></textarea>
+        <span asp-validation-for="Direccion" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ContactoEmergencia" class="form-label"></label>
+        <input asp-for="ContactoEmergencia" class="form-control" />
+        <span asp-validation-for="ContactoEmergencia" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="TelefonoEmergencia" class="form-label"></label>
+        <input asp-for="TelefonoEmergencia" class="form-control" />
+        <span asp-validation-for="TelefonoEmergencia" class="text-danger"></span>
+    </div>
+
+    <div class="form-check mb-3">
+        <input asp-for="Estado"
+               class="form-check-input"
+               id="Estado" />
+
+        <label asp-for="Estado" class="form-check-label">
+            Persona activa
+        </label>
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Guardar Cambios
+    </button>
+
+    <a asp-action="Index" class="btn btn-secondary">
+        Cancelar
+    </a>
+
+</form>
+
+@if (ViewBag.Error != null)
+{
+<div class="alert alert-danger mt-3">
+    @ViewBag.Error
+</div>
+}
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        // Guarda el estado original de la persona al cargar la página
+        const estadoOriginal = document.getElementById("Estado").checked;
+
+        // Intercepta el envío del formulario
+        document.getElementById("formEditarPersona").addEventListener("submit", function (e) {
+
+            const estadoActual = document.getElementById("Estado").checked;
+
+            // Solo solicita confirmación si el estado cambió
+            if (estadoOriginal !== estadoActual) {
+
+                let mensaje = estadoActual
+                    ? "¿Está seguro de que desea ACTIVAR esta persona?"
+                    : "¿Está seguro de que desea DESACTIVAR esta persona?";
+
+                if (!confirm(mensaje)) {
+                    e.preventDefault();
+                }
+            }
+        });
+    </script>
+
+}
