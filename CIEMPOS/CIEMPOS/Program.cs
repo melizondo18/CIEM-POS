@@ -17,6 +17,9 @@ builder.Services.AddScoped<RolService>();
 builder.Services.AddScoped<IPersonaRepo, PersonaRepo>();
 builder.Services.AddScoped<PersonaService>();
 
+builder.Services.AddScoped<IUsuarioRepo, UsuarioRepo>();
+builder.Services.AddScoped<UsuarioService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

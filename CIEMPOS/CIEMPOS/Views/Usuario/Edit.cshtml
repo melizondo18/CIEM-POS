@@ -1,0 +1,66 @@
+﻿@*
+    Nombre del archivo: Edit.cshtml
+    Descripción: Permite modificar la información de un usuario existente.
+*@
+
+@model CIEMPOS.Models.TbUsuario
+
+@{
+    ViewData["Title"] = "Editar Usuario";
+}
+
+<h2>Editar Usuario</h2>
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.Error
+    </div>
+}
+
+<form asp-action="Edit" method="post">
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <input asp-for="IdUsuario" type="hidden" />
+    <input asp-for="IdPersona" type="hidden" />
+
+    <div class="mb-3">
+        <label class="form-label">Persona</label>
+        <input class="form-control"
+               value="@($"{Model.IdPersonaNavigation?.Nombre} {Model.IdPersonaNavigation?.Apellido}")"
+               readonly />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="IdRol" class="form-label"></label>
+        <select asp-for="IdRol"
+                asp-items="ViewBag.Roles"
+                class="form-select">
+        </select>
+        <span asp-validation-for="IdRol" class="text-danger"></span>
+    </div>
+
+    <div class="form-check mb-3">
+        <input asp-for="Estado" class="form-check-input" />
+        <label class="form-check-label" for="Estado">
+        Activo
+        </label>
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Guardar
+    </button>
+
+    <a asp-action="Index" class="btn btn-secondary">
+        Cancelar
+    </a>
+
+</form>
+
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,6 +1,137 @@
-﻿namespace CIEMPOS.Controllers
+﻿/*
+ * Nombre del archivo: UsuarioController.cs
+ * Descripción: Controlador encargado de administrar las operaciones
+ * relacionadas con los usuarios del sistema.
+ */
+
+using CIEMPOS.Models;
+using CIEMPOS.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+
+namespace CIEMPOS.Controllers
 {
-    public class UsuarioController
+    public class UsuarioController : Controller
     {
+        // Servicios
+        private readonly UsuarioService _usuarioService;
+        private readonly PersonaService _personaService;
+        private readonly RolService _rolService;
+
+        // Constructor con Dependency Injection
+        public UsuarioController(
+            UsuarioService usuarioService,
+            PersonaService personaService,
+            RolService rolService)
+        {
+            _usuarioService = usuarioService;
+            _personaService = personaService;
+            _rolService = rolService;
+        }
+
+        // Muestra el listado de usuarios
+        public IActionResult Index(bool mostrarInactivos = false)
+        {
+            IEnumerable<TbUsuario> usuarios = _usuarioService.GetAll(mostrarInactivos);
+
+            ViewBag.MostrarInactivos = mostrarInactivos;
+
+            return View(usuarios);
+        }
+
+        // Muestra el formulario para registrar un usuario
+        [HttpGet]
+        public IActionResult Create()
+        {
+            CargarListas();
+
+            return View();
+        }
+
+        // Registra un nuevo usuario
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(TbUsuario usuario)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    CargarListas();
+                    return View(usuario);
+                }
+
+                _usuarioService.Create(usuario);
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = ex.Message;
+
+                CargarListas();
+
+                return View(usuario);
+            }
+        }
+
+        // Muestra el formulario para editar un usuario
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            TbUsuario? usuario = _usuarioService.GetById(id);
+
+            if (usuario == null)
+                return NotFound();
+
+            CargarListas();
+
+            return View(usuario);
+        }
+
+        // Actualiza un usuario
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(TbUsuario usuario)
+        {
+            try
+            {
+                // Estos campos no se editan desde esta vista
+                ModelState.Remove(nameof(TbUsuario.Contrasena));
+                ModelState.Remove(nameof(TbUsuario.ConfirmarContrasena));
+
+                if (!ModelState.IsValid)
+                {
+                    CargarListas();
+                    return View(usuario);
+                }
+
+                _usuarioService.Update(usuario);
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = ex.Message;
+
+                CargarListas();
+
+                return View(usuario);
+            }
+        }
+
+        // Carga las listas utilizadas por las vistas
+        private void CargarListas()
+        {
+            ViewBag.Personas = new SelectList(
+                _personaService.GetAll(),
+                "IdPersona",
+                "Nombre");
+
+            ViewBag.Roles = new SelectList(
+                _rolService.GetAll(),
+                "IdRol",
+                "Nombre");
+        }
     }
 }

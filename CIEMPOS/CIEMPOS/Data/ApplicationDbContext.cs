@@ -141,6 +141,7 @@ public partial class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<TbUsuario>(entity =>
         {
+            entity.Property(e => e.DebeCambiarContrasena).HasDefaultValue(true);
             entity.Property(e => e.Estado).HasDefaultValue(true);
 
             entity.HasOne(d => d.IdPersonaNavigation).WithOne(p => p.TbUsuario)

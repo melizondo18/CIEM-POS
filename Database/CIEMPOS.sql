@@ -26,6 +26,7 @@ CREATE TABLE TB_Persona (
     ContactoEmergencia VARCHAR(100) NULL,
     TelefonoEmergencia VARCHAR(20) NULL,
     FechaRegistro DATETIME NOT NULL DEFAULT GETDATE(),
+    DebeCambiarContrasena BIT NOT NULL DEFAULT 1,
     Estado BIT NOT NULL DEFAULT 1,
 
     CONSTRAINT PK_TB_Persona
@@ -110,6 +111,7 @@ CREATE TABLE TB_Usuario (
     IdPersona INT NOT NULL,
     IdRol INT NOT NULL,
     Contrasena VARCHAR(255) NOT NULL,
+    DebeCambiarContrasena BIT NOT NULL DEFAULT 1,
     Estado BIT NOT NULL DEFAULT 1,
 
     CONSTRAINT PK_TB_Usuario
@@ -126,7 +128,7 @@ CREATE TABLE TB_Usuario (
     CONSTRAINT UQ_TB_Usuario_IdPersona
         UNIQUE (IdPersona)
 );
-Go
+GO
 
 /*******************************************************
     TABLA: TB_Paciente
@@ -284,19 +286,3 @@ CREATE TABLE TB_BitacoraMovimiento (
         REFERENCES TB_Usuario (IdUsuario)
 );
 GO
-
-INSERT INTO TB_Rol (Nombre, Descripcion, Estado)
-VALUES ('Administrador', 'Acceso completo al sistema.', 1);
-
-INSERT INTO TB_Rol (Nombre, Descripcion, Estado)
-VALUES ('Servicio al Cliente', 'Gestiona la atención y el registro de los clientes.', 1);
-
-INSERT INTO TB_Rol (Nombre, Descripcion, Estado)
-VALUES ('Regente', 'Asigna y aprueba las prescripciones de ejercicio de los clientes.', 1);
-
-SELECT * FROM TB_Rol;
-
-UPDATE TB_Rol
-SET Estado = 1
-WHERE IdRol = 4;
-
