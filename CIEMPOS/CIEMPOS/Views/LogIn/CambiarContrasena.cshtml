@@ -1,0 +1,54 @@
+﻿@*
+    -----------------------------------------------------------------------
+    Vista que permite al usuario cambiar su contraseña durante el primer
+    ingreso al sistema.
+    -----------------------------------------------------------------------
+*@
+
+@{
+    ViewData["Title"] = "Cambiar Contraseña";
+}
+
+<h2>Cambiar Contraseña</h2>
+
+<hr />
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        @Html.ValidationSummary(false)
+    </div>
+}
+
+<form asp-action="CambiarContrasena" method="post">
+
+    <div class="mb-3">
+        <label for="nuevaContrasena" class="form-label">
+            Nueva contraseña
+        </label>
+
+        <input type="password"
+               id="nuevaContrasena"
+               name="nuevaContrasena"
+               class="form-control"
+               required />
+    </div>
+
+    <div class="mb-3">
+        <label for="confirmarContrasena" class="form-label">
+            Confirmar contraseña
+        </label>
+
+        <input type="password"
+               id="confirmarContrasena"
+               name="confirmarContrasena"
+               class="form-control"
+               required />
+    </div>
+
+    <button type="submit"
+            class="btn btn-primary">
+        Guardar
+    </button>
+
+</form>

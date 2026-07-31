@@ -9,10 +9,21 @@
     <link rel="stylesheet" href="~/CIEMPOS.styles.css" asp-append-version="true" />
 </head>
 <body>
+
+    @{
+        string? nombreCompleto = Context.Session.GetString("NombreCompleto");
+    }
+
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CIEMPOS</a>
+
+                <a class="navbar-brand"
+                   asp-area=""
+                   asp-controller="Home"
+                   asp-action="Index">
+                    CIEMPOS
+                </a>
 
                 <button class="navbar-toggler"
                         type="button"
@@ -25,6 +36,7 @@
                 </button>
 
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+
                     <ul class="navbar-nav flex-grow-1">
 
                         <li class="nav-item">
@@ -70,21 +82,49 @@
                         </li>
 
                     </ul>
+
+                    @if (!string.IsNullOrEmpty(nombreCompleto))
+                    {
+                        <div class="d-flex align-items-center">
+
+                            <span class="me-3">
+                                Bienvenido,
+                                <strong>@nombreCompleto</strong>
+                            </span>
+
+                            <a asp-controller="LogIn"
+                               asp-action="LogOut"
+                               class="btn btn-outline-danger btn-sm">
+                                Cerrar sesión
+                            </a>
+
+                        </div>
+                    }
+
                 </div>
+
             </div>
         </nav>
     </header>
 
     <div class="container">
+
+        <partial name="Messages" />
+
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
+
     </div>
 
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2026 - CIEMPOS -
-            <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <a asp-area=""
+               asp-controller="Home"
+               asp-action="Privacy">
+                Privacy
+            </a>
         </div>
     </footer>
 

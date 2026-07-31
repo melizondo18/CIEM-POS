@@ -86,5 +86,25 @@ namespace CIEMPOS.Repos
                            .FirstOrDefault(u =>
                                u.IdPersonaNavigation.Identificacion == identificacion);
         }
+
+        // Actualiza la contraseña del usuario y desactiva el cambio obligatorio
+        public bool UpdatePassword(int idUsuario, string nuevaContrasena)
+        {
+            // Busca el usuario en la base de datos
+            TbUsuario? usuario = _context.TbUsuarios.Find(idUsuario);
+
+            // Verifica que el usuario exista
+            if (usuario == null)
+                return false;
+
+            // Actualiza la contraseña
+            usuario.Contrasena = nuevaContrasena;
+
+            // El usuario ya no debe cambiar la contraseña
+            usuario.DebeCambiarContrasena = false;
+
+            // Guarda los cambios
+            return _context.SaveChanges() > 0;
+        }
     }
 }

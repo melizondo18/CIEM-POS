@@ -8,16 +8,12 @@ namespace CIEMPOS.Repos
 {
     public interface IUsuarioRepo
     {
-        // Obtiene la lista de usuarios registrados
         IEnumerable<TbUsuario> GetAll(bool mostrarInactivos = false);
 
-        // Busca un usuario por su identificador
         TbUsuario? GetById(int id);
 
-        // Registra un nuevo usuario
         bool Create(TbUsuario usuario);
 
-        // Actualiza la información de un usuario
         bool Update(TbUsuario usuario);
 
         // Verifica si la persona ya tiene un usuario registrado
@@ -25,5 +21,8 @@ namespace CIEMPOS.Repos
 
         // Busca un usuario por su número de identificación
         TbUsuario? GetByIdentification(string identificacion);
+
+        // Actualiza la contraseña del usuario y desactiva el cambio obligatorio
+        bool UpdatePassword(int idUsuario, string nuevaContrasena);
     }
 }

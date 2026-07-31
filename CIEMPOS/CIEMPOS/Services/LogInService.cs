@@ -1,7 +1,8 @@
-﻿/*
- * Nombre del archivo: LogInService.cs
- * Descripción: Servicio encargado de la lógica de autenticación de los usuarios
- * del sistema, incluyendo la validación de credenciales y el control de acceso.
+﻿/** LogInService
+ * Servicio encargado de la lógica de autenticación de los usuarios del
+ * sistema, incluyendo la validación de credenciales y el control de
+ * acceso a la aplicación.
+ * -----------------------------------------------------------------------
  */
 
 using CIEMPOS.Helpers;
@@ -12,10 +13,8 @@ namespace CIEMPOS.Services
 {
     public class LogInService
     {
-        // Repositorio para el acceso a los datos de los usuarios
         private readonly IUsuarioRepo _usuarioRepo;
 
-        // Constructor con Dependency Injection
         public LogInService(IUsuarioRepo usuarioRepo)
         {
             _usuarioRepo = usuarioRepo;
@@ -43,10 +42,37 @@ namespace CIEMPOS.Services
             return usuario;
         }
 
-        // Verifica si el usuario debe cambiar su contraseña
+        // Indica si el usuario debe cambiar su contraseña
         public bool MustChangePassword(TbUsuario usuario)
         {
             return usuario.DebeCambiarContrasena;
+        }
+
+        // Cambia la contraseña del usuario
+        public bool ChangePassword(
+            int idUsuario,
+            string nuevaContrasena,
+            string confirmarContrasena)
+        {
+            // Verifica que ambas contraseñas coincidan
+            if (nuevaContrasena != confirmarContrasena)
+                throw new Exception("Las contraseñas no coinciden.");
+
+            // Valida la complejidad de la contraseña
+            Helper.ValidarContrasena(nuevaContrasena);
+
+            // Encripta la nueva contraseña
+            string hash = Helper.EncriptarContrasena(nuevaContrasena);
+
+            // Actualiza la contraseña del usuario
+            bool actualizado = _usuarioRepo.UpdatePassword(idUsuario, hash);
+
+            // Verifica que la actualización haya sido exitosa
+            if (!actualizado)
+                throw new Exception("No fue posible actualizar la contraseña.");
+
+            // Indica que el cambio fue exitoso
+            return true;
         }
     }
 }
