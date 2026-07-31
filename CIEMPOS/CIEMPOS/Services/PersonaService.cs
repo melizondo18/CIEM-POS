@@ -25,6 +25,12 @@ namespace CIEMPOS.Services
             return _personaRepo.GetAll(mostrarInactivos);
         }
 
+        // Obtiene las personas activas que aún no están registradas como pacientes
+        public IEnumerable<TbPersona> GetDisponiblesParaPaciente()
+        {
+            return _personaRepo.GetDisponiblesParaPaciente();
+        }
+
         // Obtiene una persona por Id
         public TbPersona? GetById(int id)
         {
@@ -120,5 +126,7 @@ namespace CIEMPOS.Services
             if (edad > 120)
                 throw new Exception("La fecha de nacimiento no es válida.");
         }
+
+
     }
 }

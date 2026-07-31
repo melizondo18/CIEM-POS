@@ -21,5 +21,8 @@ namespace CIEMPOS.Repos
 
         // Verifica si otra persona ya utiliza la identificación indicada
         bool ExistsByIdentification(string identificacion, int idPersona);
+
+        // Obtiene las personas que aún no están registradas como pacientes
+        IEnumerable<TbPersona> GetDisponiblesParaPaciente();
     }
 }

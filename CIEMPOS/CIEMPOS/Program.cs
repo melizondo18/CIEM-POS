@@ -42,6 +42,9 @@ builder.Services.AddScoped<UsuarioService>();
 
 builder.Services.AddScoped<LogInService>();
 
+builder.Services.AddScoped<IPacienteRepo, PacienteRepo>();
+builder.Services.AddScoped<PacienteService>();
+
 // Construye la aplicación
 var app = builder.Build();
 

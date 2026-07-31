@@ -4,6 +4,7 @@
 
 using CIEMPOS.Data;
 using CIEMPOS.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CIEMPOS.Repos
 {
@@ -87,6 +88,16 @@ namespace CIEMPOS.Repos
             return _context.TbPersonas
                            .Any(p => p.Identificacion == identificacion &&
                                      p.IdPersona != idPersona);
+        }
+
+        // Obtiene las personas activas que aún no están registradas como pacientes
+        public IEnumerable<TbPersona> GetDisponiblesParaPaciente()
+        {
+            return _context.TbPersonas
+                           .Where(p => p.Estado)
+                           .Where(p => !_context.TbPacientes
+                                                .Any(pa => pa.IdPersona == p.IdPersona))
+                           .ToList();
         }
     }
 }
