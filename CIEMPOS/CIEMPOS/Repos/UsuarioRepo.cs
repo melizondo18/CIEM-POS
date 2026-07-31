@@ -20,7 +20,7 @@ namespace CIEMPOS.Repos
             _context = context;
         }
 
-        // Obtiene los usuarios según su estado
+        // Obtiene la lista de usuarios según el filtro indicado
         public IEnumerable<TbUsuario> GetAll(bool mostrarInactivos = false)
         {
             IQueryable<TbUsuario> query = _context.TbUsuarios
@@ -33,7 +33,7 @@ namespace CIEMPOS.Repos
             return query.ToList();
         }
 
-        // Busca un usuario por Id
+        // Busca un usuario por su identificador
         public TbUsuario? GetById(int id)
         {
             return _context.TbUsuarios
@@ -42,7 +42,7 @@ namespace CIEMPOS.Repos
                            .FirstOrDefault(u => u.IdUsuario == id);
         }
 
-        // Guarda un nuevo usuario
+        // Registra un nuevo usuario
         public bool Create(TbUsuario usuario)
         {
             // Agrega el usuario
@@ -52,7 +52,7 @@ namespace CIEMPOS.Repos
             return _context.SaveChanges() > 0;
         }
 
-        // Actualiza un usuario existente
+        // Actualiza la información de un usuario
         public bool Update(TbUsuario usuario)
         {
             // Busca el usuario en la base de datos
@@ -75,6 +75,16 @@ namespace CIEMPOS.Repos
         {
             return _context.TbUsuarios
                            .Any(u => u.IdPersona == idPersona);
+        }
+
+        // Busca un usuario por su número de identificación
+        public TbUsuario? GetByIdentification(string identificacion)
+        {
+            return _context.TbUsuarios
+                           .Include(u => u.IdPersonaNavigation)
+                           .Include(u => u.IdRolNavigation)
+                           .FirstOrDefault(u =>
+                               u.IdPersonaNavigation.Identificacion == identificacion);
         }
     }
 }

@@ -1,0 +1,58 @@
+﻿@*
+    -----------------------------------------------------------------------
+    Login - Inicio de Sesión
+    -----------------------------------------------------------------------
+    Proyecto: CIEMPOS
+
+    Descripción:
+    Vista que permite a los usuarios del sistema autenticarse mediante su
+    número de identificación y contraseña.
+    -----------------------------------------------------------------------
+*@
+
+@{
+    ViewData["Title"] = "Iniciar Sesión";
+}
+
+<h2>Iniciar Sesión</h2>
+
+<hr />
+
+<!-- Muestra los mensajes de error del ModelState -->
+<div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+<form asp-action="Index" method="post">
+
+    <div class="mb-3">
+        <label for="identificacion" class="form-label">
+            Número de identificación
+        </label>
+        <input type="text"
+               id="identificacion"
+               name="identificacion"
+               class="form-control"
+               required />
+    </div>
+
+    <div class="mb-3">
+        <label for="password" class="form-label">
+            Contraseña
+        </label>
+        <input type="password"
+               id="password"
+               name="password"
+               class="form-control"
+               required />
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Iniciar sesión
+    </button>
+
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
