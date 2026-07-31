@@ -1,6 +1,5 @@
 ﻿@*
-    Nombre del archivo: Edit.cshtml
-    Descripción: Permite modificar la información de un usuario existente.
+    Permite modificar la información de un usuario existente.
 *@
 
 @model CIEMPOS.Models.TbUsuario
@@ -44,7 +43,7 @@
     <div class="form-check mb-3">
         <input asp-for="Estado" class="form-check-input" />
         <label class="form-check-label" for="Estado">
-        Activo
+            Activo
         </label>
     </div>
 
@@ -55,6 +54,29 @@
     <a asp-action="Index" class="btn btn-secondary">
         Cancelar
     </a>
+
+</form>
+
+<hr />
+
+<h5>Seguridad</h5>
+
+<p>
+    Restablece la contraseña del usuario y obliga a cambiarla en el próximo inicio de sesión.
+</p>
+
+<form asp-action="ResetPassword" method="post">
+
+    @Html.AntiForgeryToken()
+
+    <input type="hidden"
+           name="id"
+           value="@Model.IdUsuario" />
+
+    <button type="submit"
+            class="btn btn-warning">
+        Restablecer contraseña
+    </button>
 
 </form>
 

@@ -9,6 +9,9 @@ namespace CIEMPOS.Helpers
 {
     public static class Helper
     {
+        // Contraseña temporal utilizada para restablecer usuarios
+        public const string PASSWORD_TEMPORAL = "Temporal123!";
+
         // Calcula la edad de una persona según su fecha de nacimiento
         public static int CalcularEdad(DateOnly fechaNacimiento)
         {

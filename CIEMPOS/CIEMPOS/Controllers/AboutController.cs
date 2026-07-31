@@ -1,5 +1,4 @@
 ﻿/****************************************************************************
- * Nombre del archivo: AboutController.cs
  * Controlador encargado de mostrar la información
  * general del sistema.
  ***************************************************************************/

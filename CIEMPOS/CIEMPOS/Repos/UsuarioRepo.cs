@@ -106,5 +106,25 @@ namespace CIEMPOS.Repos
             // Guarda los cambios
             return _context.SaveChanges() > 0;
         }
+
+        // Restablece la contraseña del usuario y activa el cambio obligatorio
+        public bool ResetPassword(int idUsuario, string nuevaContrasena)
+        {
+            // Busca el usuario en la base de datos
+            TbUsuario? usuario = _context.TbUsuarios.Find(idUsuario);
+
+            // Verifica que el usuario exista
+            if (usuario == null)
+                return false;
+
+            // Actualiza la contraseña
+            usuario.Contrasena = nuevaContrasena;
+
+            // Obliga al usuario a cambiar la contraseña en el próximo ingreso
+            usuario.DebeCambiarContrasena = true;
+
+            // Guarda los cambios
+            return _context.SaveChanges() > 0;
+        }
     }
 }

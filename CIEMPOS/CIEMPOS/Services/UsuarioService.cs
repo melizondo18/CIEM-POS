@@ -93,6 +93,30 @@ namespace CIEMPOS.Services
             return _usuarioRepo.Update(usuario);
         }
 
+        // Restablece la contraseña de un usuario
+        public bool ResetPassword(int idUsuario)
+        {
+            // Valida que el Id sea correcto
+            if (idUsuario <= 0)
+                throw new Exception("El usuario seleccionado no es válido.");
+
+            // Obtiene el usuario
+            TbUsuario? usuario = _usuarioRepo.GetById(idUsuario);
+
+            // Verifica que exista
+            if (usuario == null)
+                throw new Exception("El usuario seleccionado no existe.");
+
+            // Encripta la contraseña temporal
+            string passwordEncriptada =
+                Helper.EncriptarContrasena(Helper.PASSWORD_TEMPORAL);
+
+            // Restablece la contraseña
+            return _usuarioRepo.ResetPassword(
+                idUsuario,
+                passwordEncriptada);
+        }
+
         // Valida la información necesaria para crear un usuario
         private void ValidarUsuario(TbUsuario usuario)
         {

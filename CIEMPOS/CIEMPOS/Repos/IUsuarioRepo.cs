@@ -24,5 +24,8 @@ namespace CIEMPOS.Repos
 
         // Actualiza la contraseña del usuario y desactiva el cambio obligatorio
         bool UpdatePassword(int idUsuario, string nuevaContrasena);
+
+        // Restablece la contraseña de un usuario y activa el cambio obligatorio
+        bool ResetPassword(int idUsuario, string nuevaContrasena);
     }
 }

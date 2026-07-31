@@ -4,6 +4,7 @@
  * relacionadas con los usuarios del sistema.
  */
 
+using CIEMPOS.Helpers;
 using CIEMPOS.Models;
 using CIEMPOS.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -63,6 +64,8 @@ namespace CIEMPOS.Controllers
 
                 _usuarioService.Create(usuario);
 
+                TempData["Success"] = "El usuario fue registrado correctamente.";
+
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
@@ -108,6 +111,8 @@ namespace CIEMPOS.Controllers
 
                 _usuarioService.Update(usuario);
 
+                TempData["Success"] = "El usuario fue actualizado correctamente.";
+
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
@@ -117,6 +122,31 @@ namespace CIEMPOS.Controllers
                 CargarListas();
 
                 return View(usuario);
+            }
+        }
+
+        // Restablece la contraseña de un usuario
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ResetPassword(int id)
+        {
+            try
+            {
+                // Restablece la contraseña
+                _usuarioService.ResetPassword(id);
+
+                // Muestra un mensaje informativo
+                TempData["Success"] =
+                    $"La contraseña fue restablecida correctamente. La nueva contraseña temporal es: {Helper.PASSWORD_TEMPORAL}";
+
+                // Regresa al listado de usuarios
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = ex.Message;
+
+                return RedirectToAction(nameof(Index));
             }
         }
 
