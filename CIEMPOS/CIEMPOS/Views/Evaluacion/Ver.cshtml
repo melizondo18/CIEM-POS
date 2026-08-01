@@ -1,0 +1,116 @@
+﻿@*
+    Muestra el detalle de una evaluación física.
+*@
+
+@model CIEMPOS.Models.TbEvaluacionFisica
+
+@{
+    ViewData["Title"] = "Ver Evaluación";
+}
+
+<h2>Evaluación Física</h2>
+
+<input asp-for="IdEvaluacion" type="hidden" />
+
+<h5>Información General</h5>
+
+<div class="mb-3">
+    <label class="form-label">Paciente</label>
+    <input class="form-control"
+           value="@($"{Model.IdPacienteNavigation?.IdPersonaNavigation?.Nombre} {Model.IdPacienteNavigation?.IdPersonaNavigation?.Apellido}")"
+           readonly />
+</div>
+
+<div class="row">
+
+    <div class="col-md-6 mb-3">
+        <label class="form-label">Fecha de Evaluación</label>
+        <input class="form-control"
+               value="@Model.FechaEvaluacion.ToString("dd/MM/yyyy HH:mm")"
+               readonly />
+    </div>
+
+    <div class="col-md-6 mb-3">
+        <label class="form-label">Evaluador</label>
+        <input class="form-control"
+               value="@($"{Model.IdUsuarioNavigation?.IdPersonaNavigation?.Nombre} {Model.IdUsuarioNavigation?.IdPersonaNavigation?.Apellido}")"
+               readonly />
+    </div>
+
+</div>
+
+<hr />
+
+<h5>Composición Corporal</h5>
+
+<div class="row">
+
+    <div class="col-md-6 mb-3">
+        <label class="form-label">Peso (kg)</label>
+        <input class="form-control"
+               value="@Model.Peso"
+               readonly />
+    </div>
+
+    <div class="col-md-6 mb-3">
+        <label class="form-label">Estatura (m)</label>
+        <input class="form-control"
+               value="@Model.Estatura"
+               readonly />
+    </div>
+
+</div>
+
+<div class="row">
+
+    <div class="col-md-6 mb-3">
+        <label class="form-label">IMC</label>
+        <input class="form-control"
+               value="@Model.Imc"
+               readonly />
+    </div>
+
+    <div class="col-md-6 mb-3">
+        <label class="form-label">% Grasa</label>
+        <input class="form-control"
+               value="@Model.PorcentajeGrasa"
+               readonly />
+    </div>
+
+</div>
+
+<div class="row">
+
+    <div class="col-md-6 mb-3">
+        <label class="form-label">Masa Muscular (kg)</label>
+        <input class="form-control"
+               value="@Model.MasaMuscular"
+               readonly />
+    </div>
+
+</div>
+
+<hr />
+
+<h5>Observaciones</h5>
+
+<div class="mb-3">
+    <textarea class="form-control"
+              rows="5"
+              readonly>@Model.Observaciones</textarea>
+</div>
+
+<div class="mt-4">
+
+    <a asp-action="Index"
+       class="btn btn-secondary">
+        Regresar
+    </a>
+
+    <a asp-action="Edit"
+       asp-route-id="@Model.IdEvaluacion"
+       class="btn btn-primary">
+        Editar
+    </a>
+
+</div>

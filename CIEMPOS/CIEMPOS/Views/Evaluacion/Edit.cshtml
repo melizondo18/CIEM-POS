@@ -1,0 +1,136 @@
+﻿@*
+    Permite modificar la información de una evaluación física.
+*@
+
+@model CIEMPOS.Models.TbEvaluacionFisica
+
+@{
+    ViewData["Title"] = "Editar Evaluación";
+}
+
+<h2>Editar Evaluación</h2>
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.Error
+    </div>
+}
+
+<form asp-action="Edit" method="post">
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <input asp-for="IdEvaluacion" type="hidden" />
+    <input asp-for="IdPaciente" type="hidden" />
+    <input asp-for="IdUsuario" type="hidden" />
+    <input asp-for="FechaEvaluacion" type="hidden" />
+
+    <div class="mb-3">
+        <label class="form-label">Paciente</label>
+        <input class="form-control"
+               value="@($"{Model.IdPacienteNavigation?.IdPersonaNavigation?.Nombre} {Model.IdPacienteNavigation?.IdPersonaNavigation?.Apellido}")"
+               readonly />
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Fecha de Evaluación</label>
+            <input class="form-control"
+                   value="@Model.FechaEvaluacion.ToString("dd/MM/yyyy HH:mm")"
+                   readonly />
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Evaluador</label>
+            <input class="form-control"
+                   value="@($"{Model.IdUsuarioNavigation?.IdPersonaNavigation?.Nombre} {Model.IdUsuarioNavigation?.IdPersonaNavigation?.Apellido}")"
+                   readonly />
+        </div>
+
+    </div>
+
+    <hr />
+
+    <div class="row">
+
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Peso (kg)</label>
+            <input asp-for="Peso"
+                   type="number"
+                   step="0.01"
+                   class="form-control"
+                   placeholder="75.50" />
+            <span asp-validation-for="Peso" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Estatura (m)</label>
+            <input asp-for="Estatura"
+                   type="number"
+                   step="0.01"
+                   class="form-control"
+                   placeholder="1.68" />
+            <span asp-validation-for="Estatura" class="text-danger"></span>
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-6 mb-3">
+            <label class="form-label">% Grasa</label>
+            <input asp-for="PorcentajeGrasa"
+                   type="number"
+                   step="0.01"
+                   class="form-control"
+                   placeholder="22.30" />
+            <span asp-validation-for="PorcentajeGrasa" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Masa Muscular (kg)</label>
+            <input asp-for="MasaMuscular"
+                   type="number"
+                   step="0.01"
+                   class="form-control"
+                   placeholder="35.10" />
+            <span asp-validation-for="MasaMuscular" class="text-danger"></span>
+        </div>
+
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Observaciones" class="form-label"></label>
+
+        <textarea asp-for="Observaciones"
+                  class="form-control"
+                  rows="5"
+                  placeholder="Ingrese observaciones relevantes sobre la evaluación física del paciente."></textarea>
+
+        <span asp-validation-for="Observaciones" class="text-danger"></span>
+    </div>
+
+    <div class="mt-4">
+
+        <a asp-action="Index"
+           class="btn btn-secondary">
+            Cancelar
+        </a>
+
+        <button type="submit"
+                class="btn btn-primary">
+            Guardar
+        </button>
+
+    </div>
+
+</form>
+
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

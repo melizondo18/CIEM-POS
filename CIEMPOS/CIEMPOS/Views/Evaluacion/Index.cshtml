@@ -1,0 +1,110 @@
+﻿@*
+    Muestra el historial de evaluaciones físicas de un paciente.
+*@
+
+@model IEnumerable<CIEMPOS.Models.TbEvaluacionFisica>
+
+@{
+    ViewData["Title"] = "Evaluaciones Físicas";
+}
+
+<h2>Evaluaciones Físicas</h2>
+
+<form method="get" class="row g-3 mb-4">
+
+    <div class="col-md-4">
+        <label class="form-label">Paciente</label>
+        <select name="idPaciente"
+                asp-items="ViewBag.Pacientes"
+                class="form-select">
+            <option value="">Seleccione un paciente</option>
+        </select>
+    </div>
+
+    <div class="col-md-3">
+        <label class="form-label">Desde</label>
+        <input type="date"
+               name="fechaInicio"
+               class="form-control"
+               value="@ViewBag.FechaInicio?.ToString("yyyy-MM-dd")" />
+    </div>
+
+    <div class="col-md-3">
+        <label class="form-label">Hasta</label>
+        <input type="date"
+               name="fechaFin"
+               class="form-control"
+               value="@ViewBag.FechaFin?.ToString("yyyy-MM-dd")" />
+    </div>
+
+    <div class="col-md-2 d-flex align-items-end">
+
+        <button type="submit"
+                class="btn btn-primary me-2">
+            Buscar
+        </button>
+
+        <a asp-action="Create"
+           class="btn btn-success">
+            Nueva Evaluación
+        </a>
+
+    </div>
+
+</form>
+
+<table class="table table-striped table-bordered">
+
+    <thead>
+        <tr>
+            <th>Paciente</th>
+            <th>Fecha</th>
+            <th>IMC</th>
+            <th>% Grasa</th>
+            <th>Masa Muscular</th>
+            <th style="width:100px;">Acciones</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var evaluacion in Model)
+        {
+            <tr>
+
+                <td>
+                    @($"{evaluacion.IdPacienteNavigation?.IdPersonaNavigation?.Nombre} {evaluacion.IdPacienteNavigation?.IdPersonaNavigation?.Apellido}")
+                </td>
+
+                <td>
+                    @evaluacion.FechaEvaluacion.ToString("dd/MM/yyyy")
+                </td>
+
+                <td>
+                    @evaluacion.Imc
+                </td>
+
+                <td>
+                    @evaluacion.PorcentajeGrasa %
+                </td>
+
+                <td>
+                    @evaluacion.MasaMuscular
+                </td>
+
+                <td>
+
+                    <a asp-action="Ver"
+                       asp-route-id="@evaluacion.IdEvaluacion"
+                       class="btn btn-info btn-sm">
+                        Ver
+                    </a>
+
+                </td>
+
+            </tr>
+        }
+
+    </tbody>
+
+</table>

@@ -1,6 +1,5 @@
-/*Configura los servicios, la inyección de dependencias,
- * la conexión a la base de datos y el pipeline de ejecución de la
- * aplicación CIEMPOS.
+/*Configura los servicios, la inyección de dependencias,la conexión 
+ * a la base de datos y el pipeline de ejecución de la aplicación.
  */
 
 using CIEMPOS.Data;
@@ -44,6 +43,9 @@ builder.Services.AddScoped<LogInService>();
 
 builder.Services.AddScoped<IPacienteRepo, PacienteRepo>();
 builder.Services.AddScoped<PacienteService>();
+
+builder.Services.AddScoped<IEvaluacionRepo, EvaluacionRepo>();
+builder.Services.AddScoped<EvaluacionService>();
 
 // Construye la aplicación
 var app = builder.Build();
