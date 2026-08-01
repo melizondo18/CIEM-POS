@@ -2,6 +2,7 @@
  * relacionadas con las evaluaciones físicas del sistema.
  */
 
+using CIEMPOS.Helpers;
 using CIEMPOS.Models;
 using CIEMPOS.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -24,12 +25,25 @@ namespace CIEMPOS.Controllers
             _pacienteService = pacienteService;
         }
 
+        // Obtiene el rol del usuario autenticado
+        private int? IdRol
+        {
+            get
+            {
+                return HttpContext.Session.GetInt32("IdRol");
+            }
+        }
+
         // Muestra el listado de evaluaciones
         public IActionResult Index(
             int? idPaciente,
             DateTime? fechaInicio,
             DateTime? fechaFin)
         {
+            // Verifica que el usuario tenga acceso al módulo
+            if (!Helper.TieneAccesoEvaluaciones(IdRol))
+                return RedirectToAction("Index", "Home");
+
             IEnumerable<TbEvaluacionFisica> evaluaciones =
                 _evaluacionService.GetAll(
                     idPaciente,
@@ -48,6 +62,10 @@ namespace CIEMPOS.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            // Verifica que el usuario tenga acceso al módulo
+            if (!Helper.TieneAccesoEvaluaciones(IdRol))
+                return RedirectToAction("Index", "Home");
+
             CargarListas();
 
             return View();
@@ -58,6 +76,10 @@ namespace CIEMPOS.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(TbEvaluacionFisica evaluacion)
         {
+            // Verifica que el usuario tenga acceso al módulo
+            if (!Helper.TieneAccesoEvaluaciones(IdRol))
+                return RedirectToAction("Index", "Home");
+
             try
             {
                 // Estas propiedades son cargadas por Entity Framework
@@ -91,6 +113,10 @@ namespace CIEMPOS.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
+            // Verifica que el usuario tenga acceso al módulo
+            if (!Helper.TieneAccesoEvaluaciones(IdRol))
+                return RedirectToAction("Index", "Home");
+
             TbEvaluacionFisica? evaluacion =
                 _evaluacionService.GetById(id);
 
@@ -107,6 +133,10 @@ namespace CIEMPOS.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(TbEvaluacionFisica evaluacion)
         {
+            // Verifica que el usuario tenga acceso al módulo
+            if (!Helper.TieneAccesoEvaluaciones(IdRol))
+                return RedirectToAction("Index", "Home");
+
             try
             {
                 // Estas propiedades son cargadas por Entity Framework
@@ -140,6 +170,10 @@ namespace CIEMPOS.Controllers
         [HttpGet]
         public IActionResult Ver(int id)
         {
+            // Verifica que el usuario tenga acceso al módulo
+            if (!Helper.TieneAccesoEvaluaciones(IdRol))
+                return RedirectToAction("Index", "Home");
+
             TbEvaluacionFisica? evaluacion =
                 _evaluacionService.GetById(id);
 

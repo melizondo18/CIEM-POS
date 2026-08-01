@@ -1,61 +1,144 @@
 ﻿@* Esta vista corresponde a la página principal del sistema.
-    Proporciona acceso a los diferentes módulos administrativos
-    mediante enlaces a las funcionalidades disponibles. *@
+   Proporciona acceso a los diferentes módulos administrativos
+   mediante enlaces a las funcionalidades disponibles. *@
+
+@using CIEMPOS.Helpers
 
 @{
     ViewData["Title"] = "Inicio";
+
+    int? idRol = ViewBag.IdRol as int?;
+    string? nombreCompleto = ViewBag.NombreCompleto as string;
+    string? nombreRol = ViewBag.NombreRol as string;
+
+    bool usuarioAutenticado = idRol != null;
 }
 
 <div class="text-center mb-5">
-    <h1 class="display-4">Sistema CIEMPOS</h1>
+
+    <h1 class="display-4">Sistema CEDERSA</h1>
 
     <p class="lead">
-        Centro Integral Especializado en Psicología y Salud
+        Centro de Enseñanza, Investigación y Desarrollo en Salud y Rendimiento Humano
     </p>
 
-    <p>
-        Bienvenido al sistema de gestión administrativa de CIEMPOS.
-        Desde esta página puede acceder a los diferentes módulos del sistema.
-    </p>
+    @if (!usuarioAutenticado)
+    {
+        <p>
+            Bienvenido al sistema de gestión administrativa de CEDERSA.
+            Inicie sesión para acceder a los módulos disponibles.
+        </p>
 
-    <a asp-controller="LogIn"
-       asp-action="Index"
-       class="btn btn-dark mt-3">
-        Iniciar Sesión
-    </a>
-</div>
+        <a asp-controller="LogIn"
+           asp-action="Index"
+           class="btn btn-dark mt-3">
+            Iniciar Sesión
+        </a>
+    }
+    else
+    {
+        <p class="mb-1">
+            Bienvenido(a),
+            <strong>@nombreCompleto</strong>
+        </p>
 
-<div class="d-flex flex-wrap gap-2">
+        <p class="text-muted mb-4">
+            Rol: @nombreRol
+        </p>
 
-    <a asp-controller="Rol"
-       asp-action="Index"
-       class="btn btn-primary">
-        Administrar Roles
-    </a>
-
-    <a asp-controller="Persona"
-       asp-action="Index"
-       class="btn btn-success">
-        Administrar Personas
-    </a>
-
-    <a asp-controller="Usuario"
-       asp-action="Index"
-       class="btn btn-secondary">
-        Administrar Usuarios
-    </a>
-
-    <a asp-controller="Paciente"
-       asp-action="Index"
-       class="btn btn-info">
-        Administrar Pacientes
-    </a>
-
-    <a asp-controller="Evaluacion"
-       asp-action="Index"
-       class="btn btn-info">
-        Evaluaciones Físicas
-    </a>
-
+        <a asp-controller="LogIn"
+           asp-action="LogOut"
+           class="btn btn-danger">
+            Cerrar Sesión
+        </a>
+    }
 
 </div>
+
+@if (usuarioAutenticado)
+{
+    <div class="d-flex flex-wrap gap-2">
+
+        @if (Helper.TieneAccesoRoles(idRol))
+        {
+            <a asp-controller="Rol"
+               asp-action="Index"
+               class="btn btn-primary">
+                Administrar Roles
+            </a>
+        }
+
+        @if (Helper.TieneAccesoPersonas(idRol))
+        {
+            <a asp-controller="Persona"
+               asp-action="Index"
+               class="btn btn-success">
+                Administrar Personas
+            </a>
+        }
+
+        @if (Helper.TieneAccesoUsuarios(idRol))
+        {
+            <a asp-controller="Usuario"
+               asp-action="Index"
+               class="btn btn-secondary">
+                Administrar Usuarios
+            </a>
+        }
+
+        @if (Helper.TieneAccesoPacientes(idRol))
+        {
+            <a asp-controller="Paciente"
+               asp-action="Index"
+               class="btn btn-warning">
+                Administrar Pacientes
+            </a>
+        }
+
+        @if (Helper.TieneAccesoEvaluaciones(idRol))
+        {
+            <a asp-controller="Evaluacion"
+               asp-action="Index"
+               class="btn btn-info">
+                Evaluaciones Físicas
+            </a>
+        }
+
+        @if (Helper.TieneAccesoPrescripciones(idRol))
+        {
+            <a asp-controller="Prescripcion"
+               asp-action="Index"
+               class="btn btn-dark">
+                Prescripciones
+            </a>
+        }
+
+        @if (Helper.TieneAccesoPagos(idRol))
+        {
+            <a asp-controller="Pago"
+               asp-action="Index"
+               class="btn btn-outline-primary">
+                Pagos
+            </a>
+        }
+
+        @if (Helper.TieneAccesoReportes(idRol))
+        {
+            <a asp-controller="Reporte"
+               asp-action="Index"
+               class="btn btn-outline-success">
+                Reportes
+            </a>
+        }
+
+        @if (Helper.TieneAccesoBitacora(idRol))
+        {
+            <a asp-controller="Bitacora"
+               asp-action="Index"
+               class="btn btn-outline-secondary">
+                Bitácora
+            </a>
+        }
+
+    </div>
+}

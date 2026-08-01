@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CIEMPOS.Controllers
 {
-    public class PagoController : Controller
+    public class ReporteController : Controller
     {
         // Obtiene el rol del usuario autenticado
         private int? IdRol
@@ -14,11 +14,11 @@ namespace CIEMPOS.Controllers
             }
         }
 
-        // Muestra el módulo de Pagos
+        // Muestra el módulo de Reportes
         public IActionResult Index()
         {
             // Verifica que el usuario tenga acceso al módulo
-            if (!Helper.TieneAccesoPagos(IdRol))
+            if (!Helper.TieneAccesoReportes(IdRol))
                 return RedirectToAction("Index", "Home");
 
             return View();

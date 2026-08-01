@@ -30,10 +30,24 @@ namespace CIEMPOS.Controllers
             _rolService = rolService;
         }
 
+        // Obtiene el rol del usuario autenticado
+        private int? IdRol
+        {
+            get
+            {
+                return HttpContext.Session.GetInt32("IdRol");
+            }
+        }
+
         // Muestra el listado de usuarios
         public IActionResult Index(bool mostrarInactivos = false)
         {
-            IEnumerable<TbUsuario> usuarios = _usuarioService.GetAll(mostrarInactivos);
+            // Verifica que el usuario tenga acceso al módulo
+            if (!Helper.TieneAccesoUsuarios(IdRol))
+                return RedirectToAction("Index", "Home");
+
+            IEnumerable<TbUsuario> usuarios =
+                _usuarioService.GetAll(mostrarInactivos);
 
             ViewBag.MostrarInactivos = mostrarInactivos;
 
@@ -44,6 +58,10 @@ namespace CIEMPOS.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            // Verifica que el usuario tenga acceso al módulo
+            if (!Helper.TieneAccesoUsuarios(IdRol))
+                return RedirectToAction("Index", "Home");
+
             CargarListas();
 
             return View();
@@ -54,6 +72,10 @@ namespace CIEMPOS.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(TbUsuario usuario)
         {
+            // Verifica que el usuario tenga acceso al módulo
+            if (!Helper.TieneAccesoUsuarios(IdRol))
+                return RedirectToAction("Index", "Home");
+
             try
             {
                 if (!ModelState.IsValid)
@@ -64,7 +86,8 @@ namespace CIEMPOS.Controllers
 
                 _usuarioService.Create(usuario);
 
-                TempData["Success"] = "El usuario fue registrado correctamente.";
+                TempData["Success"] =
+                    "El usuario fue registrado correctamente.";
 
                 return RedirectToAction(nameof(Index));
             }
@@ -82,6 +105,10 @@ namespace CIEMPOS.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
+            // Verifica que el usuario tenga acceso al módulo
+            if (!Helper.TieneAccesoUsuarios(IdRol))
+                return RedirectToAction("Index", "Home");
+
             TbUsuario? usuario = _usuarioService.GetById(id);
 
             if (usuario == null)
@@ -97,6 +124,10 @@ namespace CIEMPOS.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(TbUsuario usuario)
         {
+            // Verifica que el usuario tenga acceso al módulo
+            if (!Helper.TieneAccesoUsuarios(IdRol))
+                return RedirectToAction("Index", "Home");
+
             try
             {
                 // Estos campos no se editan desde esta vista
@@ -111,7 +142,8 @@ namespace CIEMPOS.Controllers
 
                 _usuarioService.Update(usuario);
 
-                TempData["Success"] = "El usuario fue actualizado correctamente.";
+                TempData["Success"] =
+                    "El usuario fue actualizado correctamente.";
 
                 return RedirectToAction(nameof(Index));
             }
@@ -130,6 +162,10 @@ namespace CIEMPOS.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult ResetPassword(int id)
         {
+            // Verifica que el usuario tenga acceso al módulo
+            if (!Helper.TieneAccesoUsuarios(IdRol))
+                return RedirectToAction("Index", "Home");
+
             try
             {
                 // Restablece la contraseña

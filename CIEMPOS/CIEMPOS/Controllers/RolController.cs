@@ -2,6 +2,7 @@
 // Recibe las peticiones del usuario, utiliza el servicio de roles para
 // ejecutar la lógica de negocio y devuelve las vistas correspondientes.
 
+using CIEMPOS.Helpers;
 using CIEMPOS.Models;
 using CIEMPOS.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -19,9 +20,22 @@ namespace CIEMPOS.Controllers
             _rolService = rolService;
         }
 
+        // Obtiene el rol del usuario autenticado
+        private int? IdRol
+        {
+            get
+            {
+                return HttpContext.Session.GetInt32("IdRol");
+            }
+        }
+
         // Muestra la lista de roles
         public IActionResult Index(bool mostrarInactivos = false)
         {
+            // Verifica que el usuario tenga acceso al módulo
+            if (!Helper.TieneAccesoRoles(IdRol))
+                return RedirectToAction("Index", "Home");
+
             // Obtiene la lista de roles
             var roles = _rolService.GetAll(mostrarInactivos);
 
@@ -33,14 +47,21 @@ namespace CIEMPOS.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            // Verifica que el usuario tenga acceso al módulo
+            if (!Helper.TieneAccesoRoles(IdRol))
+                return RedirectToAction("Index", "Home");
+
             return View();
         }
 
         // Registra un nuevo rol
         [HttpPost]
-
         public IActionResult Create(TbRol rol)
         {
+            // Verifica que el usuario tenga acceso al módulo
+            if (!Helper.TieneAccesoRoles(IdRol))
+                return RedirectToAction("Index", "Home");
+
             // Valida los datos enviados desde el formulario
             if (!ModelState.IsValid)
                 return View(rol);
@@ -59,6 +80,10 @@ namespace CIEMPOS.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
+            // Verifica que el usuario tenga acceso al módulo
+            if (!Helper.TieneAccesoRoles(IdRol))
+                return RedirectToAction("Index", "Home");
+
             // Obtiene el rol por su Id
             TbRol? rol = _rolService.GetById(id);
 
@@ -74,6 +99,10 @@ namespace CIEMPOS.Controllers
         [HttpPost]
         public IActionResult Edit(TbRol rol)
         {
+            // Verifica que el usuario tenga acceso al módulo
+            if (!Helper.TieneAccesoRoles(IdRol))
+                return RedirectToAction("Index", "Home");
+
             // Valida los datos enviados desde el formulario
             if (!ModelState.IsValid)
                 return View(rol);

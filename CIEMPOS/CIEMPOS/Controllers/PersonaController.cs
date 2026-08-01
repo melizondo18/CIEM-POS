@@ -2,6 +2,7 @@
 // Recibe las peticiones del usuario, utiliza el servicio de personas para
 // ejecutar la lógica de negocio y devuelve las vistas correspondientes.
 
+using CIEMPOS.Helpers;
 using CIEMPOS.Models;
 using CIEMPOS.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -19,9 +20,22 @@ namespace CIEMPOS.Controllers
             _personaService = personaService;
         }
 
+        // Obtiene el rol del usuario autenticado
+        private int? IdRol
+        {
+            get
+            {
+                return HttpContext.Session.GetInt32("IdRol");
+            }
+        }
+
         // Muestra la lista de personas
         public IActionResult Index(bool mostrarInactivos = false)
         {
+            // Verifica que el usuario tenga acceso al módulo
+            if (!Helper.TieneAccesoPersonas(IdRol))
+                return RedirectToAction("Index", "Home");
+
             // Obtiene la lista de personas
             var personas = _personaService.GetAll(mostrarInactivos);
 
@@ -33,6 +47,10 @@ namespace CIEMPOS.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            // Verifica que el usuario tenga acceso al módulo
+            if (!Helper.TieneAccesoPersonas(IdRol))
+                return RedirectToAction("Index", "Home");
+
             return View();
         }
 
@@ -40,6 +58,10 @@ namespace CIEMPOS.Controllers
         [HttpPost]
         public IActionResult Create(TbPersona persona)
         {
+            // Verifica que el usuario tenga acceso al módulo
+            if (!Helper.TieneAccesoPersonas(IdRol))
+                return RedirectToAction("Index", "Home");
+
             // Valida los datos enviados desde el formulario
             if (!ModelState.IsValid)
                 return View(persona);
@@ -65,6 +87,10 @@ namespace CIEMPOS.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
+            // Verifica que el usuario tenga acceso al módulo
+            if (!Helper.TieneAccesoPersonas(IdRol))
+                return RedirectToAction("Index", "Home");
+
             // Obtiene la persona por su Id
             TbPersona? persona = _personaService.GetById(id);
 
@@ -80,6 +106,10 @@ namespace CIEMPOS.Controllers
         [HttpPost]
         public IActionResult Edit(TbPersona persona)
         {
+            // Verifica que el usuario tenga acceso al módulo
+            if (!Helper.TieneAccesoPersonas(IdRol))
+                return RedirectToAction("Index", "Home");
+
             // Valida los datos enviados desde el formulario
             if (!ModelState.IsValid)
                 return View(persona);

@@ -11,8 +11,10 @@ namespace CIEMPOS.Controllers
 {
     public class LogInController : Controller
     {
+        // Servicio de autenticación
         private readonly LogInService _logInService;
 
+        // Constructor con Dependency Injection
         public LogInController(LogInService logInService)
         {
             _logInService = logInService;
@@ -37,6 +39,11 @@ namespace CIEMPOS.Controllers
                 // Guarda la información del usuario en la sesión
                 HttpContext.Session.SetInt32("IdUsuario", usuario.IdUsuario);
                 HttpContext.Session.SetInt32("IdRol", usuario.IdRol);
+
+                HttpContext.Session.SetString(
+                    "NombreRol",
+                    usuario.IdRolNavigation.Nombre);
+
                 HttpContext.Session.SetString(
                     "NombreCompleto",
                     $"{usuario.IdPersonaNavigation.Nombre} {usuario.IdPersonaNavigation.Apellido}");

@@ -34,6 +34,7 @@ namespace CIEMPOS.Services
             if (!usuario.Estado)
                 throw new Exception("El usuario se encuentra inactivo.");
 
+
             // Verifica que la contraseña sea correcta
             if (!Helper.VerificarContrasena(password, usuario.Contrasena))
                 throw new Exception("La contraseña es incorrecta.");

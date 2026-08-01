@@ -4,6 +4,7 @@
  * relacionadas con los pacientes del sistema.
  */
 
+using CIEMPOS.Helpers;
 using CIEMPOS.Models;
 using CIEMPOS.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -26,9 +27,22 @@ namespace CIEMPOS.Controllers
             _personaService = personaService;
         }
 
+        // Obtiene el rol del usuario autenticado
+        private int? IdRol
+        {
+            get
+            {
+                return HttpContext.Session.GetInt32("IdRol");
+            }
+        }
+
         // Muestra el listado de pacientes
         public IActionResult Index(bool mostrarInactivos = false)
         {
+            // Verifica que el usuario tenga acceso al módulo
+            if (!Helper.TieneAccesoPacientes(IdRol))
+                return RedirectToAction("Index", "Home");
+
             IEnumerable<TbPaciente> pacientes =
                 _pacienteService.GetAll(mostrarInactivos);
 
@@ -41,6 +55,10 @@ namespace CIEMPOS.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            // Verifica que el usuario tenga acceso al módulo
+            if (!Helper.TieneAccesoPacientes(IdRol))
+                return RedirectToAction("Index", "Home");
+
             CargarListas();
 
             return View();
@@ -51,6 +69,10 @@ namespace CIEMPOS.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(TbPaciente paciente)
         {
+            // Verifica que el usuario tenga acceso al módulo
+            if (!Helper.TieneAccesoPacientes(IdRol))
+                return RedirectToAction("Index", "Home");
+
             try
             {
                 ModelState.Remove(nameof(TbPaciente.IdPersonaNavigation));
@@ -82,6 +104,10 @@ namespace CIEMPOS.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
+            // Verifica que el usuario tenga acceso al módulo
+            if (!Helper.TieneAccesoPacientes(IdRol))
+                return RedirectToAction("Index", "Home");
+
             TbPaciente? paciente = _pacienteService.GetById(id);
 
             if (paciente == null)
@@ -97,6 +123,10 @@ namespace CIEMPOS.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(TbPaciente paciente)
         {
+            // Verifica que el usuario tenga acceso al módulo
+            if (!Helper.TieneAccesoPacientes(IdRol))
+                return RedirectToAction("Index", "Home");
+
             try
             {
                 // Entity Framework carga esta propiedad automáticamente
