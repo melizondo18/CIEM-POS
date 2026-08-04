@@ -12,7 +12,8 @@ public partial class TbPago
     [Key]
     public int IdPago { get; set; }
 
-    public int IdPaciente { get; set; }
+    [Required(ErrorMessage = "Debe seleccionar un paciente.")]
+    public int? IdPaciente { get; set; }
 
     public int IdUsuario { get; set; }
 

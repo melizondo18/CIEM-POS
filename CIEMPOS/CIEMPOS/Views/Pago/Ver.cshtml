@@ -1,0 +1,96 @@
+﻿@*
+    Muestra el detalle de un pago registrado.
+*@
+
+@model CIEMPOS.Models.TbPago
+
+@{
+    ViewData["Title"] = "Ver Pago";
+}
+
+<h2>Detalle del Pago</h2>
+
+<input asp-for="IdPago" type="hidden" />
+
+<h5>Información General</h5>
+
+<div class="mb-3">
+
+    <label class="form-label">Paciente</label>
+
+    <input class="form-control"
+           value="@($"{Model.IdPacienteNavigation?.IdPersonaNavigation?.Nombre} {Model.IdPacienteNavigation?.IdPersonaNavigation?.Apellido}")"
+           readonly />
+
+</div>
+
+<div class="row">
+
+    <div class="col-md-6 mb-3">
+
+        <label class="form-label">Fecha del Pago</label>
+
+        <input class="form-control"
+               value="@Model.FechaPago.ToString("dd/MM/yyyy HH:mm")"
+               readonly />
+
+    </div>
+
+    <div class="col-md-6 mb-3">
+
+        <label class="form-label">Pago recibido por</label>
+
+        <input class="form-control"
+               value="@($"{Model.IdUsuarioNavigation?.IdPersonaNavigation?.Nombre} {Model.IdUsuarioNavigation?.IdPersonaNavigation?.Apellido}")"
+               readonly />
+
+    </div>
+
+</div>
+
+<hr />
+
+<h5>Información del Pago</h5>
+
+<div class="row">
+
+    <div class="col-md-6 mb-3">
+
+        <label class="form-label">
+            Monto Cancelado
+        </label>
+
+        <input class="form-control"
+               value="@Model.Monto.ToString("C")"
+               readonly />
+
+    </div>
+
+    <div class="col-md-6 mb-3">
+
+        <label class="form-label">
+            Número de Autorización
+        </label>
+
+        <input class="form-control"
+               value="@Model.NumeroAutorizacion"
+               readonly />
+
+    </div>
+
+</div>
+
+<div class="mt-4">
+
+    <a asp-action="Index"
+       class="btn btn-secondary">
+        Regresar
+    </a>
+
+    <a asp-action="Edit"
+       asp-route-id="@Model.IdPago"
+       class="btn btn-primary">
+        Editar
+    </a>
+
+</div>

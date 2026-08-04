@@ -24,7 +24,8 @@ namespace CIEMPOS.Repos
         public IEnumerable<TbPaciente> GetAll(bool mostrarInactivos = false)
         {
             IQueryable<TbPaciente> query = _context.TbPacientes
-                                                   .Include(p => p.IdPersonaNavigation);
+                .Include(p => p.IdPersonaNavigation)
+                .Include(p => p.TbEvaluacionFisicas);
 
             if (!mostrarInactivos)
                 query = query.Where(p => p.Estado);

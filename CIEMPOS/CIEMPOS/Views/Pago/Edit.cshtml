@@ -1,0 +1,131 @@
+﻿@*
+    Permite modificar el número de autorización de un pago.
+*@
+
+@model CIEMPOS.Models.TbPago
+
+@{
+    ViewData["Title"] = "Editar Pago";
+}
+
+<h2>Editar Pago</h2>
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.Error
+    </div>
+}
+
+<form asp-action="Edit" method="post">
+
+    <div asp-validation-summary="ModelOnly"
+         class="text-danger">
+    </div>
+
+    <input asp-for="IdPago" type="hidden" />
+    <input asp-for="IdPaciente" type="hidden" />
+    <input asp-for="IdUsuario" type="hidden" />
+    <input asp-for="FechaPago" type="hidden" />
+    <input asp-for="Monto" type="hidden" />
+    <input asp-for="Estado" type="hidden" />
+
+    <h5>Información General</h5>
+
+    <div class="mb-3">
+
+        <label class="form-label">
+            Paciente
+        </label>
+
+        <input class="form-control"
+               value="@($"{Model.IdPacienteNavigation?.IdPersonaNavigation?.Nombre} {Model.IdPacienteNavigation?.IdPersonaNavigation?.Apellido}")"
+               readonly />
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-6 mb-3">
+
+            <label class="form-label">
+                Fecha del Pago
+            </label>
+
+            <input class="form-control"
+                   value="@Model.FechaPago.ToString("dd/MM/yyyy HH:mm")"
+                   readonly />
+
+        </div>
+
+        <div class="col-md-6 mb-3">
+
+            <label class="form-label">
+                Pago recibido por
+            </label>
+
+            <input class="form-control"
+                   value="@($"{Model.IdUsuarioNavigation?.IdPersonaNavigation?.Nombre} {Model.IdUsuarioNavigation?.IdPersonaNavigation?.Apellido}")"
+                   readonly />
+
+        </div>
+
+    </div>
+
+    <hr />
+
+    <h5>Información del Pago</h5>
+
+    <div class="mb-3">
+
+        <label class="form-label">
+            Monto Cancelado
+        </label>
+
+        <input class="form-control"
+               value="@Model.Monto.ToString("C")"
+               readonly />
+
+    </div>
+
+    <div class="mb-3">
+
+        <label asp-for="NumeroAutorizacion"
+               class="form-label">
+        </label>
+
+        <input asp-for="NumeroAutorizacion"
+               class="form-control"
+               maxlength="50"
+               inputmode="numeric"
+               pattern="[0-9]*"
+               placeholder="Ej. 123456789" />
+
+        <span asp-validation-for="NumeroAutorizacion"
+              class="text-danger">
+        </span>
+
+    </div>
+
+    <div class="mt-4">
+
+        <a asp-action="Index"
+           class="btn btn-secondary">
+            Cancelar
+        </a>
+
+        <button type="submit"
+                class="btn btn-primary">
+            Guardar
+        </button>
+
+    </div>
+
+</form>
+
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

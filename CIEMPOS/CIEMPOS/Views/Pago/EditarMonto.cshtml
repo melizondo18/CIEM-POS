@@ -1,0 +1,109 @@
+﻿@*
+    Permite modificar el monto de la mensualidad.
+*@
+
+@{
+    ViewData["Title"] = "Editar Monto";
+}
+
+<h2>Editar Monto de Mensualidad</h2>
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.Error
+    </div>
+}
+
+<form asp-action="EditarMonto" method="post">
+
+    <div class="row">
+
+        <div class="col-md-6 mb-3">
+
+            <label class="form-label">
+                Monto Base
+            </label>
+
+            <input type="number"
+                   name="montoBase"
+                   id="montoBase"
+                   step="0.01"
+                   min="0"
+                   class="form-control"
+                   value="@ViewBag.MontoBase" />
+
+        </div>
+
+        <div class="col-md-6 mb-3">
+
+            <label class="form-label">
+                IVA
+            </label>
+
+            <input type="number"
+                   name="iva"
+                   id="iva"
+                   step="0.01"
+                   min="0"
+                   class="form-control"
+                   value="@ViewBag.Iva" />
+
+        </div>
+
+    </div>
+
+    <div class="mb-3">
+
+        <label class="form-label">
+            Total Mensualidad
+        </label>
+
+        <input type="text"
+               id="total"
+               class="form-control"
+               value="@ViewBag.Total"
+               readonly />
+
+    </div>
+
+    <div class="mt-4">
+
+        <a asp-action="Index"
+           class="btn btn-secondary">
+            Cancelar
+        </a>
+
+        <button type="submit"
+                class="btn btn-primary">
+            Guardar Cambios
+        </button>
+
+    </div>
+
+</form>
+
+@section Scripts
+{
+    <script>
+
+        function calcularTotal() {
+
+            const monto =
+                parseFloat(document.getElementById("montoBase").value) || 0;
+
+            const iva =
+                parseFloat(document.getElementById("iva").value) || 0;
+
+            document.getElementById("total").value =
+                (monto + iva).toFixed(2);
+        }
+
+        document.getElementById("montoBase")
+            .addEventListener("input", calcularTotal);
+
+        document.getElementById("iva")
+            .addEventListener("input", calcularTotal);
+
+    </script>
+}

@@ -6,6 +6,7 @@
 using System.Diagnostics;
 using CIEMPOS.Models;
 using Microsoft.AspNetCore.Mvc;
+using CIEMPOS.Helpers;
 
 namespace CIEMPOS.Controllers
 {
@@ -29,12 +30,37 @@ namespace CIEMPOS.Controllers
             }
         }
 
-        // Muestra la página principal del sistema
-    public IActionResult Index()
+        // Obtiene el nombre completo del usuario autenticado
+        private string? NombreCompleto
         {
+            get
+            {
+                return HttpContext.Session.GetString("NombreCompleto");
+            }
+        }
+
+        // Obtiene el nombre del rol del usuario autenticado
+        private string? NombreRol
+        {
+            get
+            {
+                return HttpContext.Session.GetString("NombreRol");
+            }
+        }
+
+        // Muestra la página principal del sistema
+        public IActionResult Index()
+        {
+            if (!Helper.SesionActiva(HttpContext.Session.GetInt32("IdUsuario")))
+            {
+                TempData["Error"] = "La sesión ha expirado por inactividad. Inicie sesión nuevamente.";
+
+                return RedirectToAction("Index", "LogIn");
+            }
+
             ViewBag.IdRol = IdRol;
-            ViewBag.NombreCompleto = HttpContext.Session.GetString("NombreCompleto");
-            ViewBag.NombreRol = HttpContext.Session.GetString("NombreRol");
+            ViewBag.NombreCompleto = NombreCompleto;
+            ViewBag.NombreRol = NombreRol;
 
             return View();
         }

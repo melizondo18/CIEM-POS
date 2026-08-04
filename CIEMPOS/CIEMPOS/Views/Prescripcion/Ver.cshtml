@@ -1,0 +1,84 @@
+﻿@*
+    Muestra el detalle de una prescripción.
+*@
+
+@model CIEMPOS.Models.TbPrescripcion
+
+@{
+    ViewData["Title"] = "Ver Prescripción";
+}
+
+<h2>Prescripción</h2>
+
+<input asp-for="IdPrescripcion" type="hidden" />
+
+<h5>Información General</h5>
+
+<div class="mb-3">
+    <label class="form-label">Paciente</label>
+    <input class="form-control"
+           value="@($"{Model.IdPacienteNavigation?.IdPersonaNavigation?.Nombre} {Model.IdPacienteNavigation?.IdPersonaNavigation?.Apellido}")"
+           readonly />
+</div>
+
+<div class="row">
+
+    <div class="col-md-6 mb-3">
+        <label class="form-label">Fecha de Prescripción</label>
+        <input class="form-control"
+               value="@Model.FechaPrescripcion.ToString("dd/MM/yyyy HH:mm")"
+               readonly />
+    </div>
+
+    <div class="col-md-6 mb-3">
+        <label class="form-label">Profesional</label>
+        <input class="form-control"
+               value="@($"{Model.IdUsuarioNavigation?.IdPersonaNavigation?.Nombre} {Model.IdUsuarioNavigation?.IdPersonaNavigation?.Apellido}")"
+               readonly />
+    </div>
+
+</div>
+
+<hr />
+
+<h5>Rutina de Ejercicio</h5>
+
+<div class="mb-3">
+    <label class="form-label">Cardio</label>
+    <textarea class="form-control"
+              rows="4"
+              readonly>@Model.Cardio</textarea>
+</div>
+
+<div class="mb-3">
+    <label class="form-label">Fuerza</label>
+    <textarea class="form-control"
+              rows="5"
+              readonly>@Model.Fuerza</textarea>
+</div>
+
+<div class="mb-3">
+    <label class="form-label">Estiramiento</label>
+    <textarea class="form-control"
+              rows="4"
+              readonly>@Model.Estiramiento</textarea>
+</div>
+
+<hr />
+
+<h5>Observaciones</h5>
+
+<div class="mb-3">
+    <textarea class="form-control"
+              rows="5"
+              readonly>@Model.Observaciones</textarea>
+</div>
+
+<div class="mt-4">
+
+    <a asp-action="Index"
+       class="btn btn-secondary">
+        Regresar
+    </a>
+
+</div>

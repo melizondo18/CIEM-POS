@@ -60,6 +60,19 @@ namespace CIEMPOS.Repos
                            .FirstOrDefault(e => e.IdEvaluacion == id);
         }
 
+        // Verifica si un paciente tiene una evaluación
+        // realizada dentro del rango de fechas indicado
+        public bool ExisteEvaluacionReciente(
+            int idPaciente,
+            DateTime fechaInicio,
+            DateTime fechaFin)
+        {
+            return _context.TbEvaluacionFisicas.Any(e =>
+                e.IdPaciente == idPaciente &&
+                e.FechaEvaluacion >= fechaInicio &&
+                e.FechaEvaluacion <= fechaFin);
+        }
+
         // Registra una nueva evaluación
         public bool Create(TbEvaluacionFisica evaluacion)
         {

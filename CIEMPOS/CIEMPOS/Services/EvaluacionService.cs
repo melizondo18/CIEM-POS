@@ -4,6 +4,7 @@
 
 using CIEMPOS.Models;
 using CIEMPOS.Repos;
+using Microsoft.AspNetCore.Http;
 
 namespace CIEMPOS.Services
 {
@@ -14,15 +15,20 @@ namespace CIEMPOS.Services
         private readonly IPacienteRepo _pacienteRepo;
         private readonly IUsuarioRepo _usuarioRepo;
 
+        // Acceso a la sesión del usuario
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
         // Constructor con Dependency Injection
         public EvaluacionService(
             IEvaluacionRepo evaluacionRepo,
             IPacienteRepo pacienteRepo,
-            IUsuarioRepo usuarioRepo)
+            IUsuarioRepo usuarioRepo,
+            IHttpContextAccessor httpContextAccessor)
         {
             _evaluacionRepo = evaluacionRepo;
             _pacienteRepo = pacienteRepo;
             _usuarioRepo = usuarioRepo;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         // Obtiene las evaluaciones según los filtros indicados
@@ -57,10 +63,14 @@ namespace CIEMPOS.Services
             if (paciente == null)
                 throw new Exception("El paciente seleccionado no existe.");
 
-            // Temporal.
-            // Cuando se implemente la autenticación,
-            // este valor se obtendrá del usuario en sesión.
-            evaluacion.IdUsuario = 1;
+            // Obtiene el usuario autenticado desde la sesión
+            int? idUsuario = _httpContextAccessor.HttpContext?
+                .Session.GetInt32("IdUsuario");
+
+            if (idUsuario == null)
+                throw new Exception("No fue posible identificar el usuario que realiza la evaluación.");
+
+            evaluacion.IdUsuario = idUsuario.Value;
 
             // Verifica que el usuario exista
             TbUsuario? usuario = _usuarioRepo.GetById(evaluacion.IdUsuario);

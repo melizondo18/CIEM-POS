@@ -1,0 +1,137 @@
+﻿@*
+    Permite modificar la información de una prescripción.
+*@
+
+@model CIEMPOS.Models.TbPrescripcion
+
+@{
+    ViewData["Title"] = "Editar Prescripción";
+}
+
+<h2>Editar Prescripción</h2>
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.Error
+    </div>
+}
+
+<form asp-action="Edit" method="post">
+
+    <div asp-validation-summary="ModelOnly"
+         class="text-danger"></div>
+
+    <input asp-for="IdPrescripcion" type="hidden" />
+    <input asp-for="IdPaciente" type="hidden" />
+    <input asp-for="IdUsuario" type="hidden" />
+    <input asp-for="FechaPrescripcion" type="hidden" />
+    <input asp-for="Estado" type="hidden" />
+
+    <h5>Información General</h5>
+
+    <div class="mb-3">
+        <label class="form-label">Paciente</label>
+        <input class="form-control"
+               value="@($"{Model.IdPacienteNavigation?.IdPersonaNavigation?.Nombre} {Model.IdPacienteNavigation?.IdPersonaNavigation?.Apellido}")"
+               readonly />
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Fecha de Prescripción</label>
+            <input class="form-control"
+                   value="@Model.FechaPrescripcion.ToString("dd/MM/yyyy HH:mm")"
+                   readonly />
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Profesional</label>
+            <input class="form-control"
+                   value="@($"{Model.IdUsuarioNavigation?.IdPersonaNavigation?.Nombre} {Model.IdUsuarioNavigation?.IdPersonaNavigation?.Apellido}")"
+                   readonly />
+        </div>
+
+    </div>
+
+    <hr />
+
+    <h5>Plan de Entrenamiento</h5>
+
+    <div class="mb-3">
+        <label asp-for="Cardio" class="form-label"></label>
+
+        <textarea asp-for="Cardio"
+                  class="form-control"
+                  rows="4"
+                  placeholder="Ingrese la rutina de cardio."></textarea>
+
+        <span asp-validation-for="Cardio"
+              class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Fuerza" class="form-label"></label>
+
+        <textarea asp-for="Fuerza"
+                  class="form-control"
+                  rows="5"
+                  placeholder="Ingrese la rutina de fuerza."></textarea>
+
+        <span asp-validation-for="Fuerza"
+              class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Estiramiento"
+               class="form-label"></label>
+
+        <textarea asp-for="Estiramiento"
+                  class="form-control"
+                  rows="4"
+                  placeholder="Ingrese la rutina de estiramiento."></textarea>
+
+        <span asp-validation-for="Estiramiento"
+              class="text-danger"></span>
+    </div>
+
+    <hr />
+
+    <h5>Observaciones</h5>
+
+    <div class="mb-3">
+        <label asp-for="Observaciones"
+               class="form-label"></label>
+
+        <textarea asp-for="Observaciones"
+                  class="form-control"
+                  rows="5"
+                  placeholder="Ingrese observaciones adicionales sobre la prescripción."></textarea>
+
+        <span asp-validation-for="Observaciones"
+              class="text-danger"></span>
+    </div>
+
+    <div class="mt-4">
+
+        <a asp-action="Index"
+           class="btn btn-secondary">
+            Cancelar
+        </a>
+
+        <button type="submit"
+                class="btn btn-primary">
+            Guardar
+        </button>
+
+    </div>
+
+</form>
+
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

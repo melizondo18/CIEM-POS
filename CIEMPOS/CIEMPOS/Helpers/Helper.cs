@@ -66,6 +66,16 @@ namespace CIEMPOS.Helpers
 
         #endregion
 
+        #region Sesión
+
+        // Verifica si existe una sesión activa
+        public static bool SesionActiva(int? idUsuario)
+        {
+            return idUsuario != null;
+        }
+
+        #endregion
+
         #region Permisos
 
         // Roles

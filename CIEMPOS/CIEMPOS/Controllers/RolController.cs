@@ -32,9 +32,19 @@ namespace CIEMPOS.Controllers
         // Muestra la lista de roles
         public IActionResult Index(bool mostrarInactivos = false)
         {
+            // Verifica que exista una sesión activa
+            if (!Helper.SesionActiva(HttpContext.Session.GetInt32("IdUsuario")))
+            {
+                TempData["Error"] = "La sesión ha expirado por inactividad. Inicie sesión nuevamente.";
+                return RedirectToAction("Index", "LogIn");
+            }
+
             // Verifica que el usuario tenga acceso al módulo
             if (!Helper.TieneAccesoRoles(IdRol))
+            {
+                TempData["Error"] = "No tiene permisos para acceder a este módulo.";
                 return RedirectToAction("Index", "Home");
+            }
 
             // Obtiene la lista de roles
             var roles = _rolService.GetAll(mostrarInactivos);
@@ -47,9 +57,19 @@ namespace CIEMPOS.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            // Verifica que exista una sesión activa
+            if (!Helper.SesionActiva(HttpContext.Session.GetInt32("IdUsuario")))
+            {
+                TempData["Error"] = "La sesión ha expirado por inactividad. Inicie sesión nuevamente.";
+                return RedirectToAction("Index", "LogIn");
+            }
+
             // Verifica que el usuario tenga acceso al módulo
             if (!Helper.TieneAccesoRoles(IdRol))
+            {
+                TempData["Error"] = "No tiene permisos para acceder a este módulo.";
                 return RedirectToAction("Index", "Home");
+            }
 
             return View();
         }
@@ -58,9 +78,19 @@ namespace CIEMPOS.Controllers
         [HttpPost]
         public IActionResult Create(TbRol rol)
         {
+            // Verifica que exista una sesión activa
+            if (!Helper.SesionActiva(HttpContext.Session.GetInt32("IdUsuario")))
+            {
+                TempData["Error"] = "La sesión ha expirado por inactividad. Inicie sesión nuevamente.";
+                return RedirectToAction("Index", "LogIn");
+            }
+
             // Verifica que el usuario tenga acceso al módulo
             if (!Helper.TieneAccesoRoles(IdRol))
+            {
+                TempData["Error"] = "No tiene permisos para acceder a este módulo.";
                 return RedirectToAction("Index", "Home");
+            }
 
             // Valida los datos enviados desde el formulario
             if (!ModelState.IsValid)
@@ -80,9 +110,19 @@ namespace CIEMPOS.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
+            // Verifica que exista una sesión activa
+            if (!Helper.SesionActiva(HttpContext.Session.GetInt32("IdUsuario")))
+            {
+                TempData["Error"] = "La sesión ha expirado por inactividad. Inicie sesión nuevamente.";
+                return RedirectToAction("Index", "LogIn");
+            }
+
             // Verifica que el usuario tenga acceso al módulo
             if (!Helper.TieneAccesoRoles(IdRol))
+            {
+                TempData["Error"] = "No tiene permisos para acceder a este módulo.";
                 return RedirectToAction("Index", "Home");
+            }
 
             // Obtiene el rol por su Id
             TbRol? rol = _rolService.GetById(id);
@@ -99,9 +139,19 @@ namespace CIEMPOS.Controllers
         [HttpPost]
         public IActionResult Edit(TbRol rol)
         {
+            // Verifica que exista una sesión activa
+            if (!Helper.SesionActiva(HttpContext.Session.GetInt32("IdUsuario")))
+            {
+                TempData["Error"] = "La sesión ha expirado por inactividad. Inicie sesión nuevamente.";
+                return RedirectToAction("Index", "LogIn");
+            }
+
             // Verifica que el usuario tenga acceso al módulo
             if (!Helper.TieneAccesoRoles(IdRol))
+            {
+                TempData["Error"] = "No tiene permisos para acceder a este módulo.";
                 return RedirectToAction("Index", "Home");
+            }
 
             // Valida los datos enviados desde el formulario
             if (!ModelState.IsValid)

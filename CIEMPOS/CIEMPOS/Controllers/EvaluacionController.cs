@@ -40,9 +40,19 @@ namespace CIEMPOS.Controllers
             DateTime? fechaInicio,
             DateTime? fechaFin)
         {
+            // Verifica que exista una sesión activa
+            if (!Helper.SesionActiva(HttpContext.Session.GetInt32("IdUsuario")))
+            {
+                TempData["Error"] = "La sesión ha expirado por inactividad. Inicie sesión nuevamente.";
+                return RedirectToAction("Index", "LogIn");
+            }
+
             // Verifica que el usuario tenga acceso al módulo
             if (!Helper.TieneAccesoEvaluaciones(IdRol))
+            {
+                TempData["Error"] = "No tiene permisos para acceder a este módulo.";
                 return RedirectToAction("Index", "Home");
+            }
 
             IEnumerable<TbEvaluacionFisica> evaluaciones =
                 _evaluacionService.GetAll(
@@ -62,9 +72,19 @@ namespace CIEMPOS.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            // Verifica que exista una sesión activa
+            if (!Helper.SesionActiva(HttpContext.Session.GetInt32("IdUsuario")))
+            {
+                TempData["Error"] = "La sesión ha expirado por inactividad. Inicie sesión nuevamente.";
+                return RedirectToAction("Index", "LogIn");
+            }
+
             // Verifica que el usuario tenga acceso al módulo
             if (!Helper.TieneAccesoEvaluaciones(IdRol))
+            {
+                TempData["Error"] = "No tiene permisos para acceder a este módulo.";
                 return RedirectToAction("Index", "Home");
+            }
 
             CargarListas();
 
@@ -76,9 +96,19 @@ namespace CIEMPOS.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(TbEvaluacionFisica evaluacion)
         {
+            // Verifica que exista una sesión activa
+            if (!Helper.SesionActiva(HttpContext.Session.GetInt32("IdUsuario")))
+            {
+                TempData["Error"] = "La sesión ha expirado por inactividad. Inicie sesión nuevamente.";
+                return RedirectToAction("Index", "LogIn");
+            }
+
             // Verifica que el usuario tenga acceso al módulo
             if (!Helper.TieneAccesoEvaluaciones(IdRol))
+            {
+                TempData["Error"] = "No tiene permisos para acceder a este módulo.";
                 return RedirectToAction("Index", "Home");
+            }
 
             try
             {
@@ -113,9 +143,19 @@ namespace CIEMPOS.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
+            // Verifica que exista una sesión activa
+            if (!Helper.SesionActiva(HttpContext.Session.GetInt32("IdUsuario")))
+            {
+                TempData["Error"] = "La sesión ha expirado por inactividad. Inicie sesión nuevamente.";
+                return RedirectToAction("Index", "LogIn");
+            }
+
             // Verifica que el usuario tenga acceso al módulo
             if (!Helper.TieneAccesoEvaluaciones(IdRol))
+            {
+                TempData["Error"] = "No tiene permisos para acceder a este módulo.";
                 return RedirectToAction("Index", "Home");
+            }
 
             TbEvaluacionFisica? evaluacion =
                 _evaluacionService.GetById(id);
@@ -133,9 +173,19 @@ namespace CIEMPOS.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(TbEvaluacionFisica evaluacion)
         {
+            // Verifica que exista una sesión activa
+            if (!Helper.SesionActiva(HttpContext.Session.GetInt32("IdUsuario")))
+            {
+                TempData["Error"] = "La sesión ha expirado por inactividad. Inicie sesión nuevamente.";
+                return RedirectToAction("Index", "LogIn");
+            }
+
             // Verifica que el usuario tenga acceso al módulo
             if (!Helper.TieneAccesoEvaluaciones(IdRol))
+            {
+                TempData["Error"] = "No tiene permisos para acceder a este módulo.";
                 return RedirectToAction("Index", "Home");
+            }
 
             try
             {
@@ -170,9 +220,19 @@ namespace CIEMPOS.Controllers
         [HttpGet]
         public IActionResult Ver(int id)
         {
+            // Verifica que exista una sesión activa
+            if (!Helper.SesionActiva(HttpContext.Session.GetInt32("IdUsuario")))
+            {
+                TempData["Error"] = "La sesión ha expirado por inactividad. Inicie sesión nuevamente.";
+                return RedirectToAction("Index", "LogIn");
+            }
+
             // Verifica que el usuario tenga acceso al módulo
             if (!Helper.TieneAccesoEvaluaciones(IdRol))
+            {
+                TempData["Error"] = "No tiene permisos para acceder a este módulo.";
                 return RedirectToAction("Index", "Home");
+            }
 
             TbEvaluacionFisica? evaluacion =
                 _evaluacionService.GetById(id);

@@ -1,4 +1,4 @@
-/*Configura los servicios, la inyección de dependencias,la conexión 
+/* Configura los servicios, la inyección de dependencias, la conexión
  * a la base de datos y el pipeline de ejecución de la aplicación.
  */
 
@@ -11,6 +11,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Agrega los servicios MVC
 builder.Services.AddControllersWithViews();
+
+// Permite acceder al HttpContext desde los servicios
+builder.Services.AddHttpContextAccessor();
 
 // Habilita el uso de sesiones en la aplicación
 builder.Services.AddSession(options =>
@@ -27,7 +30,8 @@ builder.Services.AddSession(options =>
 
 // Configura la conexión a la base de datos
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Registra los repositorios y servicios del sistema
 builder.Services.AddScoped<IRolRepo, RolRepo>();
@@ -46,6 +50,12 @@ builder.Services.AddScoped<PacienteService>();
 
 builder.Services.AddScoped<IEvaluacionRepo, EvaluacionRepo>();
 builder.Services.AddScoped<EvaluacionService>();
+
+builder.Services.AddScoped<IPrescripcionRepo, PrescripcionRepo>();
+builder.Services.AddScoped<PrescripcionService>();
+
+builder.Services.AddScoped<PagoRepo>();
+builder.Services.AddScoped<PagoService>();
 
 // Construye la aplicación
 var app = builder.Build();

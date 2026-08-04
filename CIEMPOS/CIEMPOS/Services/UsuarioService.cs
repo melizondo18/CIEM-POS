@@ -89,6 +89,14 @@ namespace CIEMPOS.Services
             // Obtiene y valida el rol
             TbRol rol = ObtenerRol(usuario.IdRol);
 
+            // No permite desactivar cuentas con rol Administrador
+            if (!usuario.Estado && usuario.IdRol == Helper.ROL_ADMINISTRADOR)
+            {
+                throw new Exception(
+                    "Los usuarios con rol Administrador no pueden ser desactivados desde la aplicación. " +
+                    "Si requiere desactivar una cuenta administrativa, contacte al desarrollador del sistema.");
+            }
+
             // Actualiza el usuario
             return _usuarioRepo.Update(usuario);
         }
